@@ -16,6 +16,7 @@ script: ./test.py $TEST_SUITE
 
 # installing packages
 before_install:
+  - ./install-protobuf.sh
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -q
   - sudo apt-get install gcc-4.8 -y
