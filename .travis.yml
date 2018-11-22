@@ -63,9 +63,9 @@ install:
 script:
   - export MKL_THREADING_LAYER="GNU"
   - echo $PATH
-  - echo which biber
-  - echo locate bibtool
-  - echo locate bibclean
+  - biber -h
+  - bibtool -h
+  - bibclean -h
   # run keras backend init to initialize backend config
   #- python -c "import keras.backend"
   # create dataset directory to avoid concurrent directory creation at runtime
