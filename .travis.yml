@@ -1,3 +1,4 @@
+sudo: enabled
 language: ruby
 rvm:
  - 2.2
