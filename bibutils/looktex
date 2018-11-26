@@ -1,0 +1,53 @@
+#!/bin/csh -f
+# looktex - look for a keyword in the references in a BiBTeX file.
+#
+# David Kotz (dfk@cs.dartmouth.edu)
+#
+# usage: 
+#  looktex keyword file...
+#
+# Warning: Any characters in keyword that have meanings in regexps
+# used by either sed or egrep must be escaped with a \ (the most 
+# likely occurrence might be \ itself: use \\). Case is ignored in 
+# the search, as well as position in the reference.
+#
+# Multiple keywords may be specified with an egrep alternation format:
+# eg  looktex 'jones|smith' foo.bib
+#
+# Actually, any egrep expression is allowed. 
+# Be sure to quote it properly. 
+#
+
+set L=~/lib
+
+if ($#argv < 2) then
+    echo usage: looktex keyword 'file...'
+    exit 1
+endif
+
+set keyword=`echo "$1" | tr A-Z a-z`
+shift
+
+set script=/tmp/looktex$$
+onintr cleanup
+
+# Search for the keyword and get a script for extracting the
+# references:
+#  Cat the files
+#  Strip comment lines and comments on lines
+#  Translate to lower case
+#  Search for the keyword and all @ lines
+#  Extract the line number only, plus 'entry' for lines with @
+#  Convert this output into a sed script
+cat $* \
+    | sed -e 's/^%.*//' -e 's/\([^\\]\)%.*/\1/' \
+    | tr A-Z a-z \
+    | egrep -n "($keyword)"'|^[ ]*@' \
+    | sed -n -e "s/:[ ]*@.*$keyword.*/ entry key/p" -e 's/:[ ]*@.*/ entry/p' -e "s/:.*//p" \
+    | awk -f $L/looktex.awk > $script
+
+# Now have sed print out the correct entries:
+cat $* | sed -n -f $script 
+
+cleanup:
+rm -f $script

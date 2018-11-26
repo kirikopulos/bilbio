@@ -1,0 +1,83 @@
+
+<HTML>
+<HEAD><TITLE> bib2html demo </TITLE></HEAD>
+<BODY>
+
+<H1> bib2html demo </H1>
+
+<P> 
+
+<B>bib2html</B> is a combination of a shell script and two
+BibTeX-style files.  bib2html takes the name of a style and a list of
+.bib file names, and runs BibTeX to produce an output file bib.html.
+This demo page assumes that you have run either
+<CODE> bib2html alpha demo.bib </CODE>
+or 
+<CODE> bib2html abstract demo.bib, </CODE> 
+and that the output 
+<A HREF="bib.html"> bib.html </A>
+remains in the same directory as this
+file.  (Note: the abstracting style will often produce some warning
+messages from bibtex if the abstracts or comments are too long, but
+the resulting HTML is still usable.)
+</P>
+
+<P> 
+
+One of the neat things about bib2html is that you can put a <EM> URL
+</EM> field in your bib entries, and that URL will be used to make the
+entry's label into a Web link.  Usually, the URL would point to the
+paper itself (e.g., compressed postscript in an ftp archive, or
+perhaps even an HTML-format paper), but it could of course point to
+anything.  Thus you can expand your idea of what bib entries might
+reference....
+
+</P>
+
+<P> 
+
+One of the other neat things about bib2html is that you can put
+citations to the bibliography in other pages, much like you can in
+LaTeX.  The difference is that the citations are <EM>links</EM> to the
+bibliography page.  For example, I can refer one of my recent papers
+in the demo bibliography
+
+<A HREF="bib.html#kotz:addrtrace"> [KC94b]. </A> 
+(View the source of this page to see how it's done).  That one has the
+paper's text on-line.  My PhD thesis is
+<A HREF="bib.html#kotz:thesis"> [Kot91]. </A> 
+Another paper does not have any on-line version
+<A HREF="bib.html#kotz:pools"> [KE89]. </A> 
+
+</P>
+
+<P>
+
+Notice that I use the cite key for the anchor label, rather than the
+label chosen by BibTeX.  This has two main benefits: it makes the
+citation (URL) more like that in LaTeX, and it makes the citation
+independent of the format of the bibliography page (and the way it
+chooses labels).
+
+</P>
+
+<P>
+
+One disadvantage is that there is no way to automatically generate the
+citation labels at the point of reference, like BibTeX's
+cross-referencing capability.  Another disadvantage is that bib2html
+doesn't understand arbitrary LaTeX commands.  Although it converts
+most accents, \bf, \em, etc to HTML, 
+any fancier embedded LaTeX or TeX commands are just
+passed through.  If you need a pretty bibliography,
+you'll have to edit those by hand.
+
+</P>
+
+<A HREF="http://www.ctan.org/tex-archive/biblio/bibtex/utils/bibtools/">bib2html source</A>.
+
+<HR>
+
+-- David Kotz
+</BODY>
+</HTML>

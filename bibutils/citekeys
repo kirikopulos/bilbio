@@ -1,0 +1,52 @@
+#!/bin/csh -f
+#
+# citekeys - print out all the cite keys in given bib files
+#
+# usage: 
+#    citekeys file.bib... 
+#
+
+onintr cleanup
+
+if ($#argv < 1) then
+	   echo 'usage: citekeys file.bib...'
+	   exit 1
+endif
+
+unset files
+foreach i ($*)
+	if ($i:e == bib) then
+ 		set file=$i:r
+	else
+ 		set file=$i
+	endif
+	
+	if ($?files) then
+		set files=($files,$i)
+	else
+		set files=($file)
+	endif
+end
+
+echo creating citekeys.aux for $files
+
+cat > citekeys.aux <<EOF
+\relax 
+\citation{*}
+\bibstyle{citekeys}
+\bibdata{$files}
+EOF
+
+rm -f citekeys.{log,dvi,bbl,blg}
+
+echo bibtex citekeys
+bibtex citekeys
+
+mv citekeys.bbl citekeys.out
+
+echo ""
+echo output is in citekeys.out
+
+cleanup:
+rm -f citekeys.{tex,aux,log,dvi,bbl,blg}
+

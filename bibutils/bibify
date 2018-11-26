@@ -1,0 +1,37 @@
+#!/bin/csh -f
+
+if ($1 !~ *.aux) then
+    set input=$1.aux
+    set bbl = $1.bbl
+else
+    set input=$1
+    set bbl=$1:r.bbl
+endif
+
+set file=/tmp/bibify$$
+onintr clean
+
+cat $input > $file
+
+set style=`sed -n 's/\\bibstyle{\(.*\)}/\1/p' $input`
+
+switch($style)
+case "alpha":
+case "abstract":
+ cat $bbl | sed -n 's/bibitem\[\(.*\)\]{\(.*\)}/bibcite{\2}{\1}/p' >> $file
+ breaksw
+case "plain":
+case "unsrt":
+case "abbrv":
+ cat $bbl | sed -n 's/bibitem/bibcite/p'| awk '{print $1"{"NR"}"}' >> $file
+ breaksw
+default:
+ echo unknown bibliography style, cannot bibify.
+ goto clean
+endsw
+
+mv $file $input
+
+clean:
+/bin/rm -f $file.* >& /dev/null
+

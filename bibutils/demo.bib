@@ -1,0 +1,81 @@
+% BibTeX bibliography file
+
+@InProceedings{kotz:addrtrace,
+  author = {David Kotz and Preston Crow},
+  title = {The Expected Lifetime of ``Single-Address-Space'' Operating
+  Systems},
+  booktitle = {Proceedings of the 1994 ACM Sigmetrics Conference on Measurement
+  and Modeling of Computer Systems},
+  year = {1994},
+  month = {May},
+  pages = {161--170},
+  URL = {file://cs.dartmouth.edu/pub/CS-papers/Kotz/kotz:addrtrace.ps.Z},
+  keyword = {operating system, wide address space, virtual memory, memory
+  management, dfk},
+  abstract = {Trends toward shared-memory programming paradigms, large (64-bit)
+  address spaces, and memory-mapped files have led some to propose the use of a
+  single virtual-address space, shared by all processes and processors. Typical
+  proposals require the single address space to contain all process-private
+  data, shared data, and stored files. To simplify management of an address
+  space where stale pointers make it difficult to re-use addresses, some have
+  claimed that a 64-bit address space is sufficiently large that there is no
+  need to ever re-use addresses. Unfortunately, there has been no data to
+  either support or refute these claims, or to aid in the design of appropriate
+  address-space management policies. In this paper, we present the results of
+  extensive kernel-level tracing of the workstations in our department, and
+  discuss the implications for single-address-space operating systems. We found
+  that single-address-space systems will not outgrow the available address
+  space, but only if reasonable space-allocation policies are used, and only if
+  the system can adapt as larger address spaces become available.}
+}
+
+@InProceedings{kotz:pools,
+  author = {David Kotz and Carla Ellis},
+  title = {Evaluation of Concurrent Pools},
+  booktitle = {Proceedings of the Ninth International Conference on Distributed
+  Computer Systems},
+  year = {1989},
+  pages = {378--385},
+  keyword = {dfk, concurrent pool, concurrent data structure},
+  comment = {also Duke TR CS-1987-30, kotz:poolsTR}
+}
+
+@PhdThesis{kotz:thesis,
+  author = {David Kotz},
+  title = {Prefetching and Caching Techniques in File Systems for {MIMD}
+  Multiprocessors},
+  year = {1991},
+  month = {April},
+  school = {Duke University},
+  note = {Available as technical report CS-1991-016.},
+  URL = {file://cs.duke.edu/dist/theses/kotz/kotz.ps.Z},
+  keyword = {dfk, parallel file system, prefetching, MIMD, disk caching,
+  parallel I/O, pario bib},
+  abstract = {The increasing speed of the most powerful computers, especially
+  multiprocessors, makes it difficult to provide sufficient I/O bandwidth to
+  keep them running at full speed for the largest problems. Trends show that
+  the difference in the speed of disk hardware and the speed of processors is
+  increasing, with I/O severely limiting the performance of otherwise fast
+  machines. This widening access-time gap is known as the ``I/O bottleneck
+  crisis.'' One solution to the crisis, suggested by many researchers, is to
+  use many disks in parallel to increase the overall bandwidth. This
+  dissertation studies some of the file system issues needed to get high
+  performance from parallel disk systems, since parallel hardware alone cannot
+  guarantee good performance. The target systems are large MIMD multiprocessors
+  used for scientific applications, with large files spread over multiple disks
+  attached in parallel. The focus is on automatic caching and prefetching
+  techniques. We show that caching and prefetching can transparently provide
+  the power of parallel disk hardware to both sequential and parallel
+  applications using a conventional file system interface. We also propose a
+  new file system interface (compatible with the conventional interface) that
+  could make it easier to use parallel disks effectively. Our methodology is a
+  mixture of implementation and simulation, using a software testbed that we
+  built to run on a BBN GP1000 multiprocessor. The testbed simulates the disks
+  and fully implements the caching and prefetching policies. Using a synthetic
+  workload as input, we use the testbed in an extensive set of experiments. The
+  results show that prefetching and caching improved the performance of
+  parallel file systems, often dramatically.},
+  comment = {Published as kotz:prefetch, kotz:jwriteback, kotz:jpractical,
+  kotz:fsint2.}
+}
+

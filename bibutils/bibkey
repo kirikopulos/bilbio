@@ -1,0 +1,56 @@
+#!/bin/csh -f
+# 
+# bibkey - look for a word in the keyword field
+# in the references in a BiBTeX file. A restricted form of looktex, in
+# that bibkey only looks at "keyword" fields of the entries.
+#
+# David Kotz (dfk@cs.dartmouth.edu)
+#
+# usage: 
+#  bibkey keyword file...
+#
+# Warning: Any characters in keyword that have meanings in regexps
+# used by either sed or egrep must be escaped with a \ (the most 
+# likely occurrence might be \ itself: use \\). Case is ignored in 
+# the search.
+#
+# Multiple keywords may be specified with an egrep alternation format:
+# eg  bibkey 'jones|smith' foo.bib
+#
+# Actually, any egrep expression is allowed. 
+# Be sure to quote it properly. 
+#
+
+set L=~/lib
+
+if ($#argv < 2) then
+    echo usage: bibkey keyword 'file...'
+    exit 1
+endif
+
+set keyword=`echo "$1" | tr A-Z a-z`
+shift
+
+set script=/tmp/bibkey$$
+onintr cleanup
+
+# Search for the keyword and get a script for extracting the
+# references:
+#  Cat the files
+#  Strip comment lines and comments on lines
+#  Translate to lower case (needs to precede sed and egrep)
+#  Extract the keyword entries, plus number for lines with @
+#  Search for the keyword
+#  Convert this output into a sed script
+cat $* \
+    | sed -e 's/^%.*//' -e 's/\([^\\]\)%.*/\1/' \
+    | tr A-Z a-z \
+    | sed -n -f $L/bibkey.sed \
+    | egrep '^[0-9]*$|'"($keyword)" \
+    | awk -f $L/bibkey.awk > $script
+
+# Now have sed print out the correct entries:
+cat $* | sed -n -f $script 
+
+cleanup:
+rm -f $script

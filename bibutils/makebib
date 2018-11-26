@@ -1,0 +1,95 @@
+#!/bin/csh -f
+#
+# makebib - make a bib file that has the given citations
+#
+# usage: 
+#    makebib [-n | -d | -u] file.bib... [citekey]...
+# Where -n means "no comment", ie, don't include any "comment" fields.
+# And -d means "dfk", ie, add attribution to dfk to all comment fields.
+# And -u means "unsorted", and comments are still included.
+# Output is to subset.bib. If citekey is not given, then all refs in
+# the bibfile are included.
+#
+# dfk 11/24/92: write the subset.aux file directly, skipping latex
+# dfk 9/99: add unsorted option
+
+onintr cleanup
+
+if ($#argv < 1) then
+	   echo 'usage: makebib [-n|-d] file.bib... [citekey]...'
+	   exit 1
+endif
+
+if ("$1" == "-n") then
+	   set bst=subset-nocomment
+	   shift
+else
+	   if ("$1" == "-d") then
+	   	   set bst=subset-dfk
+	   	   shift
+	   else
+		if ("$1" == "-u") then
+		    set bst=subset-unsorted
+		    shift
+		else
+		    set bst=subset
+		endif
+	   endif
+endif
+
+if ($#argv < 1) then
+	   echo 'usage: makebib [-n|-d|-u] file.bib... [citekey]...'
+	   exit 1
+endif
+
+set files = $1:r
+shift
+
+while ($1:e == bib)
+	   set files=($files,$1:r)
+	   shift
+end
+
+echo creating subset.aux for $files
+
+cat > subset.aux <<EOF
+\relax 
+\bibstyle{$bst}
+\bibdata{$files}
+EOF
+
+# an annoying incompatibility in the way "echo" treats backslash...
+if (`uname` == Linux) then
+    set citation="\\citation"
+else
+    set citation="\citation"
+endif
+
+if ($#argv > 0) then
+	   foreach f ($*)
+	      echo $citation"{$f}" >> subset.aux
+	   end
+else
+	   echo $citation'{*}' >> subset.aux
+endif
+rm -f subset.{log,dvi,bbl,blg}
+
+echo bibtex subset
+bibtex subset
+
+if (-e makebib.sed.Z) uncompress makebib.sed
+if (-e makebib.sed.gz) gunzip makebib.sed
+
+echo ""
+echo 'Fixing these lines (might be doing the wrong thing)'
+grep '[^\\]%$' subset.bbl
+echo end.
+echo ""
+
+sed -f makebib.sed subset.bbl > subset.bib
+
+echo ""
+echo output is in subset.bib
+
+cleanup:
+rm -f subset.{tex,aux,log,dvi,bbl,blg,sed}
