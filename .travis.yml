@@ -80,3 +80,10 @@ script:
   #  else
   #    PYTHONPATH=$PWD:$PYTHONPATH py.test tests/ --ignore=tests/integration_tests --ignore=tests/test_documentation.py --ignore=tests/keras/legacy/layers_test.py --cov-config .coveragerc --cov=keras tests/;
   #  fi
+
+notifications:
+  email:
+    recipients:
+      - kirikopulos@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
