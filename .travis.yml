@@ -16,8 +16,8 @@ install:
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
   - sudo apt-get update
-  - sudo echo "socket=/var/lib/mysql/mysql.sock" >> /etc/my.cnf
-  - sudo apt-get upgrade
+  # sudo echo "socket=/var/lib/mysql/mysql.sock" >> /etc/my.cnf
+  # sudo apt-get upgrade
   - sudo apt-get install build-essential texlive-full bibtool biber bibclean bibutils rubber
   # sudo apt-get install cb2bib
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
