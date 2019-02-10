@@ -16,7 +16,7 @@ install:
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
   - sudo apt-get update
-  # sudo pkill -9 mysqld
+  - sudo echo "socket=/var/lib/mysql/mysql.sock" >> /etc/my.cnf
   - sudo apt-get upgrade
   - sudo apt-get install build-essential texlive-full bibtool biber bibclean bibutils rubber
   # sudo apt-get install cb2bib
